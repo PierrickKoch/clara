@@ -1,0 +1,31 @@
+CLARA
+=====
+
+*The Common LAAS RAster library*
+
+Concept
+-------
+
+Provide Geo data through GDAL, the standard library, from our existing libs.
+
+.. code::
+
+  +--------+
+  |        |
+  | libDTM |-----+
+  |        |     |    +-------+    +------+
+  +--------+     |    |       |    |      |
+                 +--->| clara |--->| GDAL |
+  +-----------+  |    |       |    |      |
+  |           |  |    +-------+    +------+
+  | regionMap |--+
+  |           |
+  +-----------+
+
+
+Links
+-----
+
+* http://gdal.org
+* http://www.openrobots.org/wiki
+
