@@ -1,9 +1,25 @@
 /*
  * Common LAAS Raster library
  */
+#include <iostream>         // for string
+#include <gdal_priv.h>      // for GDALDataset
+//#include <cpl_string.h>     // for ?
+#include <ogr_spatialref.h> // for OGRSpatialReference
+#include <libdtm.h>         // for dtm
+#include <libregionMap.h>   // for region
+
 #include "clara/clara.hpp"
 
-int clara::dtm::_init_transform(GDALDataset *dataset)
+int clara::dtm::load_ascii(string filepath)
+{
+    FILE* file = fopen(filepath.c_str(), "r");
+    DTM* tmp = dtm_readAsciiDtm(file);
+    fclose(file);
+    cout<<"loaded"<<endl;
+    return 0;
+}
+
+int _init_transform(GDALDataset *dataset)
 {
     OGRSpatialReference spatial_reference;
     double transform[6] = { 444720, 30, 0, 3751320, 0, -30 };
@@ -36,23 +52,28 @@ int clara::dtm::save_geotiff(string filepath)
 
     dataset = driver->Create( filepath.c_str(), 512, 512, 1, GDT_Byte, options );
 
+    _init_transform(dataset);
+
     band = dataset->GetRasterBand(1);
     band->RasterIO( GF_Write, 0, 0, 512, 512, raster, 512, 512, GDT_Byte, 0, 0 );
 
     /* Once we're done, close properly the dataset */
     GDALClose( (GDALDatasetH) dataset );
 
+    cout<<"saved"<<endl;
     return 0;
 }
 
 int main(int argc, char * argv[])
 {
     cout<<"Common LAAS Raster library"<<endl;
-    if (argc < 2) {
-        cerr<<"usage: "<<argv[0]<<" file.tiff"<<endl;
+    if (argc < 3) {
+        cerr<<"usage: "<<argv[0]<<" file.dtm file.tiff"<<endl;
         return 1;
     }
     clara::dtm obj;
-    return obj.save_geotiff(argv[1]);
+    obj.load_ascii(argv[1]);
+    obj.save_geotiff(argv[2]);
+    return 0;
 }
 

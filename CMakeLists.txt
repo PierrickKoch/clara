@@ -72,7 +72,7 @@ include_directories( ${GDAL_INCLUDE_DIRS} )
 include_directories( ${LIBDTM_INCLUDE_DIRS} )
 include_directories( ${LIBREGIONMAP_INCLUDE_DIRS} )
 
-add_executable( test src/clara.cpp )
+add_executable( test src/dtm.cpp )
 target_link_libraries( test ${GDAL_LIBRARIES} )
 target_link_libraries( test ${LIBDTM_LIBRARIES} )
 target_link_libraries( test ${LIBREGIONMAP_LIBRARIES} )

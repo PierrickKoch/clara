@@ -12,11 +12,6 @@
 #define CLARA_HPP
 
 #include <iostream>         // for string
-#include <gdal_priv.h>      // for GDALDataset
-//#include <cpl_string.h>     // for ?
-#include <ogr_spatialref.h> // for OGRSpatialReference
-#include <libdtm.h>         // for dtm
-#include <libregionMap.h>   // for region
 
 using namespace std;
 
@@ -27,7 +22,6 @@ namespace clara {
      */
     class dtm {
         int sizeX, sizeY;
-        int _init_transform(GDALDataset *dataset);
     public:
         int load_ascii(string filepath);
         int load_binary(string filepath);
