@@ -11,10 +11,12 @@
 #ifndef CLARA_HPP
 #define CLARA_HPP
 
-#include <iostream>
-#include <gdal_priv.h>
-#include <cpl_string.h>
-#include <ogr_spatialref.h>
+#include <iostream>         // for string
+#include <gdal_priv.h>      // for GDALDataset
+//#include <cpl_string.h>     // for ?
+#include <ogr_spatialref.h> // for OGRSpatialReference
+#include <libdtm.h>         // for dtm
+#include <libregionMap.h>   // for region
 
 using namespace std;
 
