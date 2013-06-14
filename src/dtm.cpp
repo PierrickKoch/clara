@@ -1,12 +1,12 @@
 /*
  * Common LAAS Raster library
  */
-#include <iostream>         // for string
+#include <string>           // for string
 #include <cassert>          // for assert
 #include <vector>           // for vector
 #include <gdal_priv.h>      // for GDALDataset
 #include <ogr_spatialref.h> // for OGRSpatialReference
-#include <libdtm.h>         // for dtm
+#include <libdtm.h>         // for DTM
 
 #include "clara/clara.hpp"
 
@@ -14,10 +14,9 @@ using namespace std;
 
 namespace clara {
 
-dtm::dtm()
-{
-    data = NULL;
-}
+dtm::dtm():
+    data(NULL)
+{}
 
 int dtm::load_ascii(string filepath)
 {
@@ -63,24 +62,17 @@ int dtm::save_geotiff(string filepath)
     const DTM* _data = (DTM*) data;
     const int size = _data->nblig * _data->nbcol;
 
-    // vector<float>
-    raster n_points;
-    n_points.resize(size);
-    raster z_min;
-    z_min.resize(size);
-    raster z_max;
-    z_max.resize(size);
-    raster z_mean;
-    z_mean.resize(size);
-    raster sigma_z;
-    sigma_z.resize(size);
+    // array<vector<float>>
+    rasters bands;
+    for (auto& band: bands)
+        band.resize(size);
 
     DTM_CELL* cell = _data->cells_tab;
     for (idx = 0; idx < size; idx++) {
-        n_points[idx]   = cell->current_info.nb_points;
-        z_max[idx]      = cell->current_info.z_max;
-        z_mean[idx]     = cell->current_info.z_moyen;
-        sigma_z[idx]    = cell->current_info.sigma_z;
+        bands[N_POINTS][idx] = cell->current_info.nb_points;
+        bands[Z_MAX][idx]    = cell->current_info.z_max;
+        bands[Z_MEAN][idx]   = cell->current_info.z_moyen;
+        bands[SIGMA_Z][idx]  = cell->current_info.sigma_z;
         cell++;
     }
 
@@ -93,25 +85,27 @@ int dtm::save_geotiff(string filepath)
     }
 
     // create the GDAL GeoTiff dataset (n layers of float32)
-    dataset = driver->Create( filepath.c_str(), _data->nbcol, _data->nblig, 5,
+    dataset = driver->Create( filepath.c_str(), _data->nbcol, _data->nblig, N_RASTER,
         GDT_Float32, options );
 
     // set the projection
     _init_utm_projection(dataset, 1);
-    double transform[6] = { 444720, 30, 0, 3751320, 0, -30 };
-    dataset->SetGeoTransform( transform ); // TODO
+    double transform[6] = {
+        0.0, // upper left pixel position x
+        1.0, // pixel width
+        0.0, //
+        0.0, // upper left pixel position y
+        0.0, //
+        1.0  // pixel height
+        };
+    // see GDALDataset::GetGeoTransform()
+    dataset->SetGeoTransform( transform );
 
-    // write z_mean layer
-    band = dataset->GetRasterBand(1);
-    band->RasterIO( GF_Write, 0, 0, _data->nbcol, _data->nblig, z_mean.data(),
-        _data->nbcol, _data->nblig, GDT_Float32, 0, 0 );
-
-    // write z_max layer
-    band = dataset->GetRasterBand(2);
-    band->RasterIO( GF_Write, 0, 0, _data->nbcol, _data->nblig, z_max.data(),
-        _data->nbcol, _data->nblig, GDT_Float32, 0, 0 );
-
-    // ...
+    for (idx = 0; idx < N_RASTER; idx++) {
+        band = dataset->GetRasterBand(idx+1);
+        band->RasterIO( GF_Write, 0, 0, _data->nbcol, _data->nblig, bands[idx].data(),
+            _data->nbcol, _data->nblig, GDT_Float32, 0, 0 );
+    }
 
     // close properly the dataset
     GDALClose( (GDALDatasetH) dataset );

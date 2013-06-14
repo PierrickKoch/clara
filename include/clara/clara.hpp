@@ -4,20 +4,20 @@
  * Common LAAS Raster library
  *
  * author:  Pierrick Koch <pierrick.koch@laas.fr>
- * create:  2013-06-12
- * edit:    2013-06-12
+ * created: 2013-06-12
  * license: BSD
  */
 #ifndef CLARA_HPP
 #define CLARA_HPP
 
-#include <iostream>         // for string
-#include <vector>           // for vector
-
-using namespace std;
+#include <string>
+#include <vector>
+#include <array>
 
 namespace clara {
-    typedef vector<float> raster;
+    typedef std::vector<float> raster;
+    enum {N_POINTS, Z_MAX, Z_MEAN, SIGMA_Z, N_RASTER};
+    typedef std::array<raster, N_RASTER> rasters;
 
     /*
      * dtm : from libDTM
@@ -27,9 +27,9 @@ namespace clara {
         void * data; // DTM
     public:
         dtm();
-        int load_ascii(string filepath);
-        int load_binary(string filepath);
-        int save_geotiff(string filepath);
+        int load_ascii(std::string filepath);
+        int load_binary(std::string filepath);
+        int save_geotiff(std::string filepath);
     };
 
     /*

@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 2.6)
 set(PACKAGE_NAME clara)
 set(PACKAGE_VERSION "0.1")
 
+# C++11 for GCC 4.6
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 
 find_package(GDAL)
@@ -74,8 +75,8 @@ include_directories( ${GDAL_INCLUDE_DIRS} )
 include_directories( ${LIBDTM_INCLUDE_DIRS} )
 include_directories( ${LIBREGIONMAP_INCLUDE_DIRS} )
 
-add_executable( test src/dtm.cpp )
-target_link_libraries( test ${GDAL_LIBRARIES} )
-target_link_libraries( test ${LIBDTM_LIBRARIES} )
-target_link_libraries( test ${LIBREGIONMAP_LIBRARIES} )
+add_executable( test_clara_dtm src/dtm.cpp )
+target_link_libraries( test_clara_dtm ${GDAL_LIBRARIES} )
+target_link_libraries( test_clara_dtm ${LIBDTM_LIBRARIES} )
+target_link_libraries( test_clara_dtm ${LIBREGIONMAP_LIBRARIES} )
 
