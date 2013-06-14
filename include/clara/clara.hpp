@@ -12,21 +12,26 @@
 #define CLARA_HPP
 
 #include <iostream>         // for string
+#include <vector>           // for vector
 
 using namespace std;
 
 namespace clara {
+    typedef vector<float> raster;
+
     /*
      * dtm : from libDTM
-     * dynamic terrain model
+     * digital terrain model
      */
     class dtm {
-        int sizeX, sizeY;
+        void * data; // DTM
     public:
+        dtm();
         int load_ascii(string filepath);
         int load_binary(string filepath);
         int save_geotiff(string filepath);
     };
+
     /*
      * region : from regionMap
      */
