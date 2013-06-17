@@ -8,122 +8,45 @@
  * license: BSD
  */
 #include <string>           // for string
-#include <cassert>          // for assert
-#include <gdal_priv.h>      // for GDALDataset
-#include <ogr_spatialref.h> // for OGRSpatialReference
+#include <stdexcept>        // for runtime_error
 #include <libdtm.h>         // for DTM
 
-#include "clara/clara.hpp"
+#include "clara/gdal.hpp"
+#include "clara/dtm.hpp"
 
 namespace clara {
 
 using namespace std;
 
-dtm::dtm():
-    data(NULL)
-{}
-
-int dtm::load_ascii(string filepath)
+int dtm::load(const string& filepath, const bool ascii = true)
 {
-    if (data != NULL)
-        destroy_dtm(data);
+    DTM* data;
     FILE* file = fopen(filepath.c_str(), "r");
-    if ( file == NULL ) {
-        cerr<<"[dtm::load_ascii] could not open: "<<filepath<<endl;
-        return 1;
-    }
-    data = dtm_readAsciiDtm(file);
+
+    if ( file == NULL )
+        throw runtime_error("[dtm] could not open file");
+
+    if (ascii)
+        data = dtm_readAsciiDtm(file);
+    else
+        data = dtm_readBinaryDtm(file);
+
     fclose(file);
-    return 0;
-}
 
-int dtm::load_binary(string filepath)
-{
-    if (data != NULL)
-        destroy_dtm(data);
-    FILE* file = fopen(filepath.c_str(), "r");
-    if ( file == NULL ) {
-        cerr<<"[dtm::load_binary] could not open: "<<filepath<<endl;
-        return 1;
-    }
-    data = dtm_readBinaryDtm(file);
-    fclose(file);
-    return 0;
-}
-
-int _init_utm_projection(GDALDataset *dataset, int utm)
-{
-    OGRSpatialReference spatial_reference;
-    char *projection = NULL;
-
-    spatial_reference.SetUTM( utm, TRUE );
-    spatial_reference.SetWellKnownGeogCS( "WGS84" );
-    spatial_reference.exportToWkt( &projection );
-    dataset->SetProjection( projection );
-    CPLFree( projection );
-    return 0;
-}
-
-int dtm::save_geotiff(string filepath)
-{
-    assert ( data != NULL );
-    GDALDriver *driver;
-    GDALDataset *dataset;
-    GDALRasterBand *band;
-    int idx;
-    const size_t size = data->nblig * data->nbcol;
-
-    // array<vector<float>>
-    rasters bands;
-    for (auto& band: bands)
-        band.resize(size);
-
+    io.set_size(data->nbcol, data->nblig);
+    // TODO get proper UTM zone and transform
+    io.set_utm(31);
+    io.set_transform(0, 0);
     DTM_CELL* cell = data->cells_tab;
-    for (idx = 0; idx < size; idx++) {
-        bands[N_POINTS][idx] = cell->current_info.nb_points;
-        bands[Z_MAX][idx]    = cell->current_info.z_max;
-        bands[Z_MEAN][idx]   = cell->current_info.z_moyen;
-        bands[SIGMA_Z][idx]  = cell->current_info.sigma_z;
+    for (int idx = 0; idx < (data->nbcol * data->nblig); idx++) {
+        io.bands[N_POINTS][idx] = cell->current_info.nb_points;
+        io.bands[Z_MAX][idx]    = cell->current_info.z_max;
+        io.bands[Z_MEAN][idx]   = cell->current_info.z_moyen;
+        io.bands[SIGMA_Z][idx]  = cell->current_info.sigma_z;
         cell++;
     }
 
-    // get the GDAL GeoTiff driver
-    GDALAllRegister();
-    driver = GetGDALDriverManager()->GetDriverByName("GTiff");
-    if ( driver == NULL ) {
-        cerr<<"[GDAL] Could not get the GeoTiff driver"<<endl;
-        return 1;
-    }
-
-    // create the GDAL GeoTiff dataset (n layers of float32)
-    dataset = driver->Create( filepath.c_str(), data->nbcol, data->nblig, N_RASTER,
-        GDT_Float32, NULL );
-    if ( dataset == NULL ) {
-        cerr<<"[GDAL] Could not create GeoTiff (multi-layers float32)"<<endl;
-        return 1;
-    }
-
-    // set the projection
-    _init_utm_projection(dataset, 1);
-    double transform[6] = {
-        0.0, // upper left pixel position x
-        1.0, // pixel width
-        0.0, //
-        0.0, // upper left pixel position y
-        0.0, //
-        1.0  // pixel height
-        };
-    // see GDALDataset::GetGeoTransform()
-    dataset->SetGeoTransform( transform );
-
-    for (idx = 0; idx < N_RASTER; idx++) {
-        band = dataset->GetRasterBand(idx+1);
-        band->RasterIO( GF_Write, 0, 0, data->nbcol, data->nblig, bands[idx].data(),
-            data->nbcol, data->nblig, GDT_Float32, 0, 0 );
-    }
-
-    // close properly the dataset
-    GDALClose( (GDALDatasetH) dataset );
+    destroy_dtm(data);
     return 0;
 }
 
@@ -137,8 +60,8 @@ int main(int argc, char * argv[])
         return 1;
     }
     clara::dtm obj;
-    obj.load_ascii(argv[1]);
-    obj.save_geotiff(argv[2]);
+    obj.load(argv[1]);
+    obj.save(argv[2]);
     return 0;
 }
 
