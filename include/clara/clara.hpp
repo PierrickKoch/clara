@@ -14,6 +14,9 @@
 #include <vector>
 #include <array>
 
+#include <libdtm.h>         // for DTM
+#include <libregionMap.h>   // for REGION_MAP
+
 namespace clara {
     typedef std::vector<float> raster;
     enum {N_POINTS, Z_MAX, Z_MEAN, SIGMA_Z, N_RASTER};
@@ -24,18 +27,24 @@ namespace clara {
      * digital terrain model
      */
     class dtm {
-        void * data; // DTM
+        DTM* data;
     public:
         dtm();
-        int load_ascii(std::string filepath);
-        int load_binary(std::string filepath);
-        int save_geotiff(std::string filepath);
+        int load_ascii(const std::string filepath);
+        int load_binary(const std::string filepath);
+        int save_geotiff(const std::string filepath);
     };
 
     /*
      * region : from regionMap
      */
-    class region;
+    class region {
+        REGION_MAP* data;
+    public:
+        region();
+        int load_ascii(const std::string filepath);
+        int save_geotiff(const std::string filepath);
+    };
 }
 
 #endif // CLARA_HPP

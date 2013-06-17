@@ -78,5 +78,8 @@ include_directories( ${LIBREGIONMAP_INCLUDE_DIRS} )
 add_executable( test_clara_dtm src/dtm.cpp )
 target_link_libraries( test_clara_dtm ${GDAL_LIBRARIES} )
 target_link_libraries( test_clara_dtm ${LIBDTM_LIBRARIES} )
-target_link_libraries( test_clara_dtm ${LIBREGIONMAP_LIBRARIES} )
+
+add_executable( test_clara_region src/region.cpp )
+target_link_libraries( test_clara_region ${GDAL_LIBRARIES} )
+target_link_libraries( test_clara_region ${LIBREGIONMAP_LIBRARIES} )
 
