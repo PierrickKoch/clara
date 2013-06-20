@@ -18,7 +18,7 @@ namespace clara {
 
 using namespace std;
 
-int dtm::load(const string& filepath, const bool ascii = true)
+int dtm::load(const string& filepath, bool ascii = true)
 {
     DTM* data;
     FILE* file = fopen(filepath.c_str(), "r");
@@ -39,6 +39,7 @@ int dtm::load(const string& filepath, const bool ascii = true)
     io.set_transform(0, 0);
     DTM_CELL* cell = data->cells_tab;
     for (int idx = 0; idx < (data->nbcol * data->nblig); idx++) {
+        // TODO check state undefined ?
         io.bands[N_POINTS][idx] = cell->current_info.nb_points;
         io.bands[Z_MAX][idx]    = cell->current_info.z_max;
         io.bands[Z_MEAN][idx]   = cell->current_info.z_moyen;

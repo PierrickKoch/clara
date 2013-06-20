@@ -20,11 +20,11 @@ namespace clara {
      */
     class region {
         /* Names of the visual terrain classes */
-        enum {NO_TEXTURE_CLASS, GRASS, CONCRETE, GRAVEL, TARMAC, N_RASTER};
+        enum {NO_3D_CLASS, FLAT, OBSTACLE, ROUGH, SLOPE, N_RASTER};
         gdal<N_RASTER> io;
     public:
-        int load(const std::string& filepath, const uint8_t format);
-        inline int save(const std::string& filepath) const {
+        int load(const std::string& filepath, uint8_t format);
+        int save(const std::string& filepath) const {
             return io.save(filepath);
         }
     };

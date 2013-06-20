@@ -24,8 +24,8 @@ namespace clara {
         enum {N_POINTS, Z_MAX, Z_MEAN, SIGMA_Z, N_RASTER};
         gdal<N_RASTER> io;
     public:
-        int load(const std::string& filepath, const bool ascii);
-        inline int save(const std::string& filepath) const {
+        int load(const std::string& filepath, bool ascii);
+        int save(const std::string& filepath) const {
             return io.save(filepath);
         }
     };

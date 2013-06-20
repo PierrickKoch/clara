@@ -70,8 +70,9 @@ namespace clara {
         void set_size(size_t x, size_t y) {
             x_size = x;
             y_size = y;
+            size_t size = x * y;
             for (auto& band: bands)
-                band.resize(x_size * y_size);
+                band.resize(size);
         }
 
         /** Save as GeoTiff

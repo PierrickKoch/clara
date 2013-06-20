@@ -18,9 +18,9 @@ namespace clara {
 
 using namespace std;
 
-int region::load(const string& filepath, const uint8_t format = 1)
+int region::load(const string& filepath, uint8_t format = 1)
 {
-    REGION_MAP* data;
+    REGION_MAP* data = rMap_createMap();
     FILE* file = fopen(filepath.c_str(), "r");
 
     if ( file == NULL )
@@ -43,7 +43,15 @@ int region::load(const string& filepath, const uint8_t format = 1)
     // TODO get proper UTM zone and transform
     io.set_utm(31);
     io.set_transform(0, 0);
-    // TODO region_map to io here
+
+    RMAP_REGION* region = data->regions;
+    for (int id_class, idx = 0; idx < (data->nbcol * data->nblig); idx++) {
+        for (id_class = 0; id_class < N_RASTER; id_class++) {
+            // TODO check state undefined ?
+            io.bands[id_class][idx] = region->infos3d.growedProbas[id_class];
+        }
+        region++;
+    }
 
     rMap_destroyMap(data);
     return 0;
