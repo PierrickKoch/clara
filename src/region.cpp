@@ -11,7 +11,6 @@
 #include <stdexcept>        // for runtime_error
 #include <libregionMap.h>   // for REGION_MAP
 
-#include "clara/gdal.hpp"
 #include "clara/region.hpp"
 
 namespace clara {
@@ -39,7 +38,8 @@ int region::load(const string& filepath, uint8_t format = 1)
 
     fclose(file);
 
-    io.set_size(data->nbcol, data->nblig);
+    io.set_size(N_RASTER, data->nbcol, data->nblig);
+
     // TODO get proper UTM zone and transform
     io.set_utm(31);
     io.set_transform(0, 0);

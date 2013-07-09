@@ -11,7 +11,6 @@
 #include <stdexcept>        // for runtime_error
 #include <libdtm.h>         // for DTM
 
-#include "clara/gdal.hpp"
 #include "clara/dtm.hpp"
 
 namespace clara {
@@ -33,10 +32,12 @@ int dtm::load(const string& filepath, bool ascii = true)
 
     fclose(file);
 
-    io.set_size(data->nbcol, data->nblig);
+    io.set_size(N_RASTER, data->nbcol, data->nblig);
+
     // TODO get proper UTM zone and transform
     io.set_utm(31);
     io.set_transform(0, 0);
+
     DTM_CELL* cell = data->cells_tab;
     for (int idx = 0; idx < (data->nbcol * data->nblig); idx++) {
         // TODO check state undefined ?

@@ -7,9 +7,11 @@ set(PACKAGE_VERSION "0.1")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 
 find_package(GDAL)
+# if GDAL_INCLUDE_DIR is NOTFOUND: export GDAL_ROOT=$prefix
+
+find_package(PkgConfig)
 
 # find libdtm
-find_package(PkgConfig)
 pkg_check_modules(PC_LIBDTM REQUIRED libdtm)
 set(LIBDTM_DEFINITIONS ${PC_LIBDTM_CFLAGS_OTHER})
 find_path(LIBDTM_INCLUDE_DIR libdtm.h
@@ -21,7 +23,6 @@ set(LIBDTM_LIBRARIES ${LIBDTM_LIBRARY})
 ##
 
 # find regionmap
-find_package(PkgConfig)
 pkg_check_modules(PC_LIBREGIONMAP REQUIRED libregionMap)
 set(LIBREGIONMAP_DEFINITIONS ${PC_LIBREGIONMAP_CFLAGS_OTHER})
 find_path(LIBREGIONMAP_INCLUDE_DIR libregionMap.h
@@ -33,7 +34,6 @@ set(LIBREGIONMAP_LIBRARIES ${LIBREGIONMAP_LIBRARY})
 ##
 
 # find libt3d
-find_package(PkgConfig)
 pkg_check_modules(PC_LIBT3D REQUIRED t3d)
 set(LIBT3D_DEFINITIONS ${PC_LIBT3D_CFLAGS_OTHER})
 find_path(LIBT3D_INCLUDE_DIR t3d.h
@@ -46,7 +46,6 @@ set(LIBT3D_LIBRARIES ${LIBT3D_LIBRARY})
 ##
 
 # find libimages3d
-find_package(PkgConfig)
 pkg_check_modules(PC_LIBIMAGES3D REQUIRED libimages3d)
 set(LIBIMAGES3D_DEFINITIONS ${PC_LIBIMAGES3D_CFLAGS_OTHER})
 find_path(LIBIMAGES3D_INCLUDE_DIR libimages3d.h
@@ -58,7 +57,6 @@ set(LIBIMAGES3D_LIBRARIES ${LIBIMAGES3D_LIBRARY})
 ##
 
 # find libgdhe
-find_package(PkgConfig)
 pkg_check_modules(PC_LIBGDHE REQUIRED gdhe)
 set(LIBGDHE_DEFINITIONS ${PC_LIBGDHE_CFLAGS_OTHER})
 find_path(LIBGDHE_INCLUDE_DIR GDHE.h
@@ -68,6 +66,18 @@ find_library(LIBGDHE_LIBRARY NAME gdhe
     HINTS ${PC_LIBGDHE_LIBDIR} ${PC_LIBGDHE_LIBRARY_DIRS} )
 set(LIBGDHE_INCLUDE_DIRS ${LIBGDHE_INCLUDE_DIR})
 set(LIBGDHE_LIBRARIES ${LIBGDHE_LIBRARY})
+##
+
+# find gladys (for gdal wraper)
+pkg_check_modules(PC_LIBGGLADYS REQUIRED gladys)
+set(LIBGLADYS_DEFINITIONS ${PC_LIBGLADYS_CFLAGS_OTHER})
+find_path(LIBGLADYS_INCLUDE_DIR GLADYS.h
+    HINTS ${PC_LIBGLADYS_INCLUDEDIR} ${PC_LIBGLADYS_INCLUDE_DIRS}
+    PATH_SUFFIXES gladys)
+find_library(LIBGLADYS_LIBRARY NAME gladys
+    HINTS ${PC_LIBGLADYS_LIBDIR} ${PC_LIBGLADYS_LIBRARY_DIRS} )
+set(LIBGLADYS_INCLUDE_DIRS ${LIBGLADYS_INCLUDE_DIR})
+set(LIBGLADYS_LIBRARIES ${LIBGLADYS_LIBRARY})
 ##
 
 include_directories(include)

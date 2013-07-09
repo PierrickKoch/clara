@@ -12,7 +12,7 @@
 
 #include <string>
 
-#include "clara/gdal.hpp"
+#include "gladys/gdal.hpp"
 
 namespace clara {
     /*
@@ -22,7 +22,7 @@ namespace clara {
     class dtm {
         /* Names of the terrain layers */
         enum {N_POINTS, Z_MAX, Z_MEAN, SIGMA_Z, N_RASTER};
-        gdal<N_RASTER> io;
+        gladys::gdal io;
     public:
         int load(const std::string& filepath, bool ascii);
         int save(const std::string& filepath) const {
