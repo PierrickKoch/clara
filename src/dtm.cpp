@@ -9,6 +9,7 @@
  */
 #include <string>           // for string
 #include <stdexcept>        // for runtime_error
+#include <cstdlib>          // exit status
 #include <libdtm.h>         // for DTM
 
 #include "clara/dtm.hpp"
@@ -49,7 +50,7 @@ int dtm::load(const string& filepath, bool ascii = true)
     }
 
     destroy_dtm(data);
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 } // namespace clara
@@ -58,12 +59,12 @@ int main(int argc, char * argv[])
 {
     std::cout<<"Common LAAS Raster library"<<std::endl;
     if (argc < 3) {
-        std::cerr<<"usage: "<<argv[0]<<" file.dtm file.tif"<<std::endl;
-        return 1;
+        std::cerr<<"usage: "<<argv[0]<<" file_in.dtm file_out.tif"<<std::endl;
+        return EXIT_FAILURE;
     }
     clara::dtm obj;
     obj.load(argv[1]);
     obj.save(argv[2]);
-    return 0;
+    return EXIT_SUCCESS;
 }
 

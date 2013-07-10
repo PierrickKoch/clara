@@ -9,6 +9,7 @@
  */
 #include <string>           // for string
 #include <stdexcept>        // for runtime_error
+#include <cstdlib>          // exit status
 #include <libregionMap.h>   // for REGION_MAP
 
 #include "clara/region.hpp"
@@ -54,7 +55,7 @@ int region::load(const string& filepath, uint8_t format = 1)
     }
 
     rMap_destroyMap(data);
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 } // namespace clara
@@ -63,12 +64,12 @@ int main(int argc, char * argv[])
 {
     std::cout<<"Common LAAS Raster library"<<std::endl;
     if (argc < 3) {
-        std::cerr<<"usage: "<<argv[0]<<" file.region file.tiff"<<std::endl;
-        return 1;
+        std::cerr<<"usage: "<<argv[0]<<" file_in.region file_out.tiff"<<std::endl;
+        return EXIT_FAILURE;
     }
     clara::region obj;
     obj.load(argv[1]);
     obj.save(argv[2]);
-    return 0;
+    return EXIT_SUCCESS;
 }
 
