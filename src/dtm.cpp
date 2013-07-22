@@ -35,9 +35,9 @@ int dtm::load(const string& filepath, bool ascii = true)
 
     io.set_size(N_RASTER, data->nbcol, data->nblig);
 
-    // TODO get proper UTM zone and transform
-    io.set_utm(31);
-    io.set_transform(0, 0);
+    // get proper UTM zone and transform
+    io.set_utm( data->geodesicOrigin.gridZone );
+    io.set_transform( data->geodesicOrigin.easting, data->geodesicOrigin.northing );
 
     DTM_CELL* cell = data->cells_tab;
     for (int idx = 0; idx < (data->nbcol * data->nblig); idx++) {
