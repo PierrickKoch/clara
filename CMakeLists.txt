@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 2.8)
 
 set(PACKAGE_NAME clara)
 set(PACKAGE_VERSION "0.1")
@@ -6,8 +6,8 @@ set(PACKAGE_VERSION "0.1")
 # C++11 for GCC 4.6
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 
-find_package(GDAL)
-# if GDAL_INCLUDE_DIR is NOTFOUND: export GDAL_ROOT=$prefix
+# Find GDAL ( export GDAL_ROOT=$prefix )
+find_package(GDAL REQUIRED)
 
 find_package(PkgConfig)
 
