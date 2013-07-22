@@ -7,7 +7,7 @@ set(PACKAGE_VERSION "0.1")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 
 # Find GDAL ( export GDAL_ROOT=$prefix )
-find_package(GDAL REQUIRED)
+find_package(GDAL)
 
 find_package(PkgConfig)
 
@@ -85,13 +85,18 @@ include_directories( ${GDAL_INCLUDE_DIRS} )
 include_directories( ${LIBDTM_INCLUDE_DIRS} )
 include_directories( ${LIBREGIONMAP_INCLUDE_DIRS} )
 
-add_executable( clara_dtm src/dtm.cpp )
+add_executable( clara_dtm src/clara_dtm.cpp src/dtm.cpp )
 target_link_libraries( clara_dtm ${GDAL_LIBRARIES} )
 target_link_libraries( clara_dtm ${LIBDTM_LIBRARIES} )
 install(TARGETS clara_dtm DESTINATION bin)
 
-add_executable( clara_region src/region.cpp )
+add_executable( clara_region src/clara_region.cpp src/region.cpp )
 target_link_libraries( clara_region ${GDAL_LIBRARIES} )
 target_link_libraries( clara_region ${LIBREGIONMAP_LIBRARIES} )
 install(TARGETS clara_region DESTINATION bin)
 
+add_executable( clara_dtm_to_region src/dtm_to_region.cpp src/region.cpp src/dtm.cpp )
+target_link_libraries( clara_dtm_to_region ${GDAL_LIBRARIES} )
+target_link_libraries( clara_dtm_to_region ${LIBDTM_LIBRARIES} )
+target_link_libraries( clara_dtm_to_region ${LIBREGIONMAP_LIBRARIES} )
+install(TARGETS clara_dtm_to_region DESTINATION bin)

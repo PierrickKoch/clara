@@ -17,15 +17,20 @@
 namespace clara {
     /*
      * region : from regionMap
+     * terrain classes
      */
     class region {
-        /* Names of the visual terrain classes */
-        enum {NO_3D_CLASS, FLAT, OBSTACLE, ROUGH, SLOPE, N_RASTER};
         gladys::gdal io;
     public:
-        int load(const std::string& filepath, uint8_t format);
+        /* Names of the visual terrain classes */
+        enum {NO_3D_CLASS, FLAT, OBSTACLE, ROUGH, SLOPE, N_RASTER};
+
+        int load(const std::string& filepath, uint8_t format = 1);
         int save(const std::string& filepath) const {
             return io.save(filepath);
+        }
+        const gladys::gdal& get_gdal() const {
+            return io;
         }
     };
 }

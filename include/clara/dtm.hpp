@@ -20,13 +20,17 @@ namespace clara {
      * digital terrain model
      */
     class dtm {
-        /* Names of the terrain layers */
-        enum {N_POINTS, Z_MAX, Z_MEAN, SIGMA_Z, N_RASTER};
         gladys::gdal io;
     public:
-        int load(const std::string& filepath, bool ascii);
+        /* Names of the terrain layers */
+        enum {N_POINTS, Z_MAX, Z_MEAN, SIGMA_Z, N_RASTER};
+
+        int load(const std::string& filepath, bool ascii = true);
         int save(const std::string& filepath) const {
             return io.save(filepath);
+        }
+        const gladys::gdal& get_gdal() const {
+            return io;
         }
     };
 }

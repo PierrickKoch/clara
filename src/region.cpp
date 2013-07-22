@@ -18,7 +18,7 @@ namespace clara {
 
 using namespace std;
 
-int region::load(const string& filepath, uint8_t format = 1)
+int region::load(const string& filepath, uint8_t format)
 {
     REGION_MAP* data = rMap_createMap();
     FILE* file = fopen(filepath.c_str(), "r");
@@ -59,17 +59,4 @@ int region::load(const string& filepath, uint8_t format = 1)
 }
 
 } // namespace clara
-
-int main(int argc, char * argv[])
-{
-    std::cout<<"Common LAAS Raster library"<<std::endl;
-    if (argc < 3) {
-        std::cerr<<"usage: "<<argv[0]<<" file_in.region file_out.tiff"<<std::endl;
-        return EXIT_FAILURE;
-    }
-    clara::region obj;
-    obj.load(argv[1]);
-    obj.save(argv[2]);
-    return EXIT_SUCCESS;
-}
 

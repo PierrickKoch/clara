@@ -18,7 +18,7 @@ namespace clara {
 
 using namespace std;
 
-int dtm::load(const string& filepath, bool ascii = true)
+int dtm::load(const string& filepath, bool ascii)
 {
     DTM* data;
     FILE* file = fopen(filepath.c_str(), "r");
@@ -54,17 +54,4 @@ int dtm::load(const string& filepath, bool ascii = true)
 }
 
 } // namespace clara
-
-int main(int argc, char * argv[])
-{
-    std::cout<<"Common LAAS Raster library"<<std::endl;
-    if (argc < 3) {
-        std::cerr<<"usage: "<<argv[0]<<" file_in.dtm file_out.tif"<<std::endl;
-        return EXIT_FAILURE;
-    }
-    clara::dtm obj;
-    obj.load(argv[1]);
-    obj.save(argv[2]);
-    return EXIT_SUCCESS;
-}
 
