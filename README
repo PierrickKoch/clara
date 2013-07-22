@@ -28,4 +28,16 @@ Links
 
 * http://gdal.org
 * http://www.openrobots.org/wiki
+* http://trac.laas.fr/git/clara
+
+
+HOWTO
+-----
+
+.. code::
+
+    git clone http://trac.laas.fr/git/clara && cd clara
+    mkdir build && cd build
+    cmake -DCMAKE_INSTALL_PREFIX=$HOME/devel ..
+    make -j8 && make install
 
