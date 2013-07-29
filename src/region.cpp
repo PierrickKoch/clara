@@ -41,9 +41,9 @@ int region::load(const string& filepath, uint8_t format)
 
     io.set_size(N_RASTER, data->nbcol, data->nblig);
 
-    // TODO get proper UTM zone and transform
-    io.set_utm(31);
-    io.set_transform(0, 0);
+    // get proper UTM zone and transform
+    io.set_utm( data->geodesicOrigin.gridZone );
+    io.set_transform( data->geodesicOrigin.easting, data->geodesicOrigin.northing );
 
     RMAP_REGION* region = data->regions;
     for (int id_class, idx = 0; idx < (data->nbcol * data->nblig); idx++) {
