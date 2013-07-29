@@ -17,10 +17,14 @@
 #include "gladys/gdal.hpp"
 
 void flag_obstacle(const gladys::gdal::raster& z_mean, gladys::gdal::rasters& region, size_t p1, size_t p2) {
+    float diff = std::abs(z_mean[p1] - z_mean[p2]);
     // if the height between to point is greater than 30cm, set 2nd point as obstacle
-    if (std::abs(z_mean[p1] - z_mean[p2]) > 0.3) {
+    if (diff > 0.3) {
         region[clara::region::OBSTACLE][p2] = 1;
         region[clara::region::FLAT][p2]     = 0;
+    } else if (diff > 0.2) {
+        region[clara::region::OBSTACLE][p2] = 0.5;
+        region[clara::region::FLAT][p2]     = 0.5;
     } else {
         region[clara::region::OBSTACLE][p2] = 0;
         region[clara::region::FLAT][p2]     = 1;
