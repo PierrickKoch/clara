@@ -100,3 +100,7 @@ target_link_libraries( clara_dtm_to_region ${GDAL_LIBRARIES} )
 target_link_libraries( clara_dtm_to_region ${LIBDTM_LIBRARIES} )
 target_link_libraries( clara_dtm_to_region ${LIBREGIONMAP_LIBRARIES} )
 install(TARGETS clara_dtm_to_region DESTINATION bin)
+
+add_executable( clara_tiff_to_region src/tiff_to_region.cpp )
+target_link_libraries( clara_tiff_to_region ${GDAL_LIBRARIES} )
+install(TARGETS clara_tiff_to_region DESTINATION bin)
