@@ -26,8 +26,8 @@ namespace clara {
         enum {NO_3D_CLASS, FLAT, OBSTACLE, ROUGH, SLOPE, N_RASTER};
 
         int load(const std::string& filepath, uint8_t format = 1);
-        int save(const std::string& filepath) const {
-            return io.save(filepath);
+        void save(const std::string& filepath) const {
+            io.save(filepath);
         }
         const gladys::gdal& get_gdal() const {
             return io;
