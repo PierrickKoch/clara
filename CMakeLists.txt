@@ -79,9 +79,9 @@ set(LIBGDHE_LIBRARIES ${LIBGDHE_LIBRARY})
 ##
 
 # find gladys (for gdal wraper)
-pkg_check_modules(PC_LIBGGLADYS REQUIRED gladys)
+pkg_check_modules(PC_LIBGLADYS REQUIRED gladys)
 set(LIBGLADYS_DEFINITIONS ${PC_LIBGLADYS_CFLAGS_OTHER})
-find_path(LIBGLADYS_INCLUDE_DIR gladys.hpp
+find_path(LIBGLADYS_INCLUDE_DIR gladys/gladys.hpp
     HINTS ${PC_LIBGLADYS_INCLUDEDIR} ${PC_LIBGLADYS_INCLUDE_DIRS}
     PATH_SUFFIXES gladys)
 find_library(LIBGLADYS_LIBRARY NAME gladys
@@ -94,6 +94,7 @@ include_directories(include)
 include_directories( ${GDAL_INCLUDE_DIRS} )
 include_directories( ${LIBDTM_INCLUDE_DIRS} )
 include_directories( ${LIBREGIONMAP_INCLUDE_DIRS} )
+include_directories( ${LIBGLADYS_INCLUDE_DIRS} )
 
 add_executable( clara_dtm src/clara_dtm.cpp src/dtm.cpp )
 target_link_libraries( clara_dtm ${GDAL_LIBRARIES} )
