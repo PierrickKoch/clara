@@ -38,8 +38,8 @@ int dtm::load(const string& filepath, bool ascii)
     // set UTM zone and transform
     io.set_utm( data->geodesicOrigin.gridZone );
     io.set_transform(
-        data->geodesicOrigin.easting,   // top left x
-        data->geodesicOrigin.northing,  // top left y
+        data->x_origine,                // top left x
+        data->y_origine,                // top left y
         data->scale_x,                  // w-e pixel resolution
         data->scale_y );                // n-s pixel resolution
 
