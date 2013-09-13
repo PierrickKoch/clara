@@ -5,6 +5,7 @@ set(PACKAGE_VERSION "0.1")
 
 # C++11 for GCC 4.6
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/CMakeModules")
 
 # Find GDAL ( export GDAL_ROOT=$prefix )
 find_package(GDAL)
@@ -115,3 +116,9 @@ install(TARGETS clara_dtm_to_region DESTINATION bin)
 add_executable( clara_tiff_to_region src/tiff_to_region.cpp )
 target_link_libraries( clara_tiff_to_region ${GDAL_LIBRARIES} )
 install(TARGETS clara_tiff_to_region DESTINATION bin)
+
+#########################################################################
+### Uninstall ###
+#########################################################################
+configure_file("${CMAKE_HOME_DIRECTORY}/CMakeModules/cmake_uninstall.cmake.in" "cmake_uninstall.cmake" IMMEDIATE @ONLY)
+add_custom_target(uninstall "${CMAKE_COMMAND}" -P "cmake_uninstall.cmake")
