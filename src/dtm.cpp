@@ -36,10 +36,11 @@ int dtm::load(const string& filepath, bool ascii)
     io.set_size(N_RASTER, data->nbcol, data->nblig);
 
     // set UTM zone and transform
-    io.set_utm( data->geodesicOrigin.gridZone );
+    io.set_utm( data->geodesicOrigin.gridZone,
+                data->geodesicOrigin.gridZoneDesignation != 0 );
     io.set_transform(
-        data->x_origine,                // top left x
-        data->y_origine,                // top left y
+        data->geodesicOrigin.easting,   // top left x
+        data->geodesicOrigin.northing,  // top left y
         data->scale_x,                  // w-e pixel resolution
         data->scale_y );                // n-s pixel resolution
 
