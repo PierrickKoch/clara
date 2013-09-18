@@ -117,6 +117,15 @@ add_executable( clara_tiff_to_region src/tiff_to_region.cpp )
 target_link_libraries( clara_tiff_to_region ${GDAL_LIBRARIES} )
 install(TARGETS clara_tiff_to_region DESTINATION bin)
 
+add_executable( clara_dsm_to_dtm src/dsm_to_dtm.cpp )
+target_link_libraries( clara_dsm_to_dtm ${GDAL_LIBRARIES} )
+install(TARGETS clara_dsm_to_dtm DESTINATION bin)
+
+add_executable( clara_dsm_to_region src/dsm_to_region.cpp src/region.cpp )
+target_link_libraries( clara_dsm_to_region ${GDAL_LIBRARIES} )
+target_link_libraries( clara_dsm_to_region ${LIBREGIONMAP_LIBRARIES} )
+install(TARGETS clara_dsm_to_region DESTINATION bin)
+
 #########################################################################
 ### Uninstall ###
 #########################################################################

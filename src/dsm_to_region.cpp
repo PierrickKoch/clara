@@ -12,17 +12,11 @@
 #include <cstdlib>          // exit status
 #include <cmath>
 
-#include "clara/dtm.hpp"
 #include "clara/region.hpp"
 #include "gladys/gdal.hpp"
 
-void flag_obstacle(const gladys::gdal::rasters& dtm, gladys::gdal::rasters& region, size_t p1, size_t p2) {
-    if (dtm[clara::dtm::N_POINTS][p2] <= 0) {
-        // unknown pixel
-        region[clara::region::NO_3D_CLASS][p2] = 1;
-        return;
-    }
-    float diff = std::abs(dtm[clara::dtm::Z_MEAN][p1] - dtm[clara::dtm::Z_MEAN][p2]);
+void flag_obstacle(const gladys::gdal::raster& dsm, gladys::gdal::rasters& region, size_t p1, size_t p2) {
+    float diff = std::abs(dsm[p1] - dsm[p2]);
     // if the height between to point is greater than 30cm, set 2nd point as obstacle
     if (diff > 0.3) {
         region[clara::region::OBSTACLE][p2] = 1;
@@ -36,18 +30,19 @@ void flag_obstacle(const gladys::gdal::rasters& dtm, gladys::gdal::rasters& regi
     }
 }
 
-gladys::gdal dtm_to_region(const gladys::gdal& dtm) {
+gladys::gdal dsm_to_region(const gladys::gdal& dsm) {
     gladys::gdal region;
-    region.copy_meta(dtm, clara::region::N_RASTER);
+    region.copy_meta(dsm, clara::region::N_RASTER);
 
-    size_t pose, width = dtm.get_width();
+    const auto& dsm_band = dsm.bands[0];
+    size_t pose, width = dsm.get_width();
     for (size_t px_x = 0; px_x < width            - 1; px_x++)
-    for (size_t px_y = 0; px_y < dtm.get_height() - 1; px_y++) {
+    for (size_t px_y = 0; px_y < dsm.get_height() - 1; px_y++) {
         // compute :: Z_MEAN{x1 - x2} > 30cm : P_OBSTACLE = 1
         pose = px_x + px_y * width;
-        flag_obstacle(dtm.bands, region.bands, pose, pose + 1);
-        flag_obstacle(dtm.bands, region.bands, pose, pose + width);
-        flag_obstacle(dtm.bands, region.bands, pose, pose + width + 1);
+        flag_obstacle(dsm_band, region.bands, pose, pose + 1);
+        flag_obstacle(dsm_band, region.bands, pose, pose + width);
+        flag_obstacle(dsm_band, region.bands, pose, pose + width + 1);
     }
 
     region.bands_name = {"NO_3D_CLASS", "FLAT", "OBSTACLE", "ROUGH", "SLOPE"};
@@ -59,13 +54,13 @@ int main(int argc, char * argv[])
 {
     std::cout<<"Common LAAS Raster library"<<std::endl;
     if (argc < 3) {
-        std::cerr<<"usage: "<<argv[0]<<" dtm.tif region.tif"<<std::endl;
+        std::cerr<<"usage: "<<argv[0]<<" dsm.tif region.tif"<<std::endl;
         return EXIT_FAILURE;
     }
 
-    gladys::gdal dtm(argv[1]);
+    gladys::gdal dsm(argv[1]);
 
-    const gladys::gdal& region = dtm_to_region( dtm );
+    const gladys::gdal& region = dsm_to_region( dsm );
     region.save(argv[2]);
 
     return EXIT_SUCCESS;

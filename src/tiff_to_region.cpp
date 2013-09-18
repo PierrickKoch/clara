@@ -17,7 +17,7 @@ int main(int argc, char * argv[])
 {
     std::cout<<"Common LAAS Raster library"<<std::endl;
     if (argc < 3) {
-        std::cerr<<"usage: "<<argv[0]<<" flat.tiff obstacle.tiff region_out.tif"<<std::endl;
+        std::cerr<<"usage: "<<argv[0]<<" flat.tif obstacle.tif region_out.tif"<<std::endl;
         return EXIT_FAILURE;
     }
 
