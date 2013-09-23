@@ -39,6 +39,9 @@ int region::load(const string& filepath, uint8_t format)
 
     fclose(file);
 
+    if ( data == NULL )
+        throw runtime_error("[region] could not read region");
+
     io.set_size(N_RASTER, data->nbcol, data->nblig);
 
     // set UTM zone and transform

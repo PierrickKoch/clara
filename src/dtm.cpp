@@ -33,6 +33,9 @@ int dtm::load(const string& filepath, bool ascii)
 
     fclose(file);
 
+    if ( data == NULL )
+        throw runtime_error("[dtm] could not read dtm");
+
     io.set_size(N_RASTER, data->nbcol, data->nblig);
 
     // set UTM zone and transform
