@@ -46,6 +46,7 @@ int dtm::load(const string& filepath, bool ascii)
         data->geodesicOrigin.northing,  // top left y
         data->scale_x,                  // w-e pixel resolution
         data->scale_y );                // n-s pixel resolution
+    io.set_custom_origin(data->x_origine, data->y_origine);
 
     DTM_CELL* cell = data->cells_tab;
     for (int idx = 0; idx < (data->nbcol * data->nblig); idx++) {

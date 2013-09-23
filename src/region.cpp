@@ -45,12 +45,15 @@ int region::load(const string& filepath, uint8_t format)
     io.set_size(N_RASTER, data->nbcol, data->nblig);
 
     // set UTM zone and transform
-    io.set_utm( data->geodesicOrigin.gridZone );
+    io.set_utm( data->geodesicOrigin.gridZone,
+                data->geodesicOrigin.gridZoneDesignation != 0 );
     io.set_transform(
         data->geodesicOrigin.easting,   // top left x
         data->geodesicOrigin.northing,  // top left y
         data->scale,                    // w-e pixel resolution
         data->scale );                  // n-s pixel resolution
+    // TODO dig into T3D origin2corner (libregionMap.h:182)
+    //io.set_custom_origin(data->origin2corner.wtf_x, data->origin2corner.wtf_y);
 
     RMAP_REGION* region = data->regions;
     for (int id_class, idx = 0; idx < (data->nbcol * data->nblig); idx++) {
