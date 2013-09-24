@@ -12,7 +12,7 @@
 
 #include <string>
 
-#include "gladys/gdal.hpp"
+#include "gdalwrap/gdal.hpp"
 
 namespace clara {
     /*
@@ -20,7 +20,7 @@ namespace clara {
      * terrain classes
      */
     class region {
-        gladys::gdal io;
+        gdalwrap::gdal io;
     public:
         /* Names of the visual terrain classes */
         enum {NO_3D_CLASS, FLAT, OBSTACLE, ROUGH, SLOPE, N_RASTER};
@@ -29,7 +29,7 @@ namespace clara {
         void save(const std::string& filepath) const {
             io.save(filepath);
         }
-        const gladys::gdal& get_gdal() const {
+        const gdalwrap::gdal& get_gdal() const {
             return io;
         }
     };

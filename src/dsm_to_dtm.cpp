@@ -12,7 +12,7 @@
 #include <cstdlib>          // exit status
 #include <cmath>
 
-#include "gladys/gdal.hpp"
+#include "gdalwrap/gdal.hpp"
 
 int main(int argc, char * argv[])
 {
@@ -22,7 +22,7 @@ int main(int argc, char * argv[])
         return EXIT_FAILURE;
     }
 
-    gladys::gdal dsm(argv[1]);
+    gdalwrap::gdal dsm(argv[1]);
     dsm.names = {"Z_MAX"};
     dsm.save(argv[2]);
 

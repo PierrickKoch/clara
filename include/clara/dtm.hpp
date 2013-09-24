@@ -12,7 +12,7 @@
 
 #include <string>
 
-#include "gladys/gdal.hpp"
+#include "gdalwrap/gdal.hpp"
 
 namespace clara {
     /*
@@ -20,7 +20,7 @@ namespace clara {
      * digital terrain model
      */
     class dtm {
-        gladys::gdal io;
+        gdalwrap::gdal io;
     public:
         /* Names of the terrain layers */
         enum {N_POINTS, Z_MAX, Z_MEAN, SIGMA_Z, N_RASTER};
@@ -29,7 +29,7 @@ namespace clara {
         void save(const std::string& filepath) const {
             io.save(filepath);
         }
-        const gladys::gdal& get_gdal() const {
+        const gdalwrap::gdal& get_gdal() const {
             return io;
         }
     };

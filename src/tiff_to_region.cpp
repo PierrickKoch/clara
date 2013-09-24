@@ -11,7 +11,7 @@
 #include <cstdlib>          // exit status
 
 #include "clara/region.hpp"
-#include "gladys/gdal.hpp"
+#include "gdalwrap/gdal.hpp"
 
 int main(int argc, char * argv[])
 {
@@ -21,9 +21,9 @@ int main(int argc, char * argv[])
         return EXIT_FAILURE;
     }
 
-    gladys::gdal flat(argv[1]);
-    gladys::gdal obstacle(argv[2]);
-    gladys::gdal region;
+    gdalwrap::gdal flat(argv[1]);
+    gdalwrap::gdal obstacle(argv[2]);
+    gdalwrap::gdal region;
     region.copy_meta(flat, clara::region::N_RASTER);
     region.names = {"NO_3D_CLASS", "FLAT", "OBSTACLE", "ROUGH", "SLOPE"};
     region.bands[clara::region::FLAT] = flat.bands[0];

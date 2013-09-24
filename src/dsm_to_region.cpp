@@ -13,9 +13,9 @@
 #include <cmath>
 
 #include "clara/region.hpp"
-#include "gladys/gdal.hpp"
+#include "gdalwrap/gdal.hpp"
 
-void flag_obstacle(const gladys::gdal::raster& dsm, gladys::gdal::rasters& region, size_t p1, size_t p2) {
+void flag_obstacle(const gdalwrap::raster& dsm, gdalwrap::rasters& region, size_t p1, size_t p2) {
     float diff = std::abs(dsm[p1] - dsm[p2]);
     // if the height between to point is greater than 30cm, set 2nd point as obstacle
     if (diff > 0.3) {
@@ -30,8 +30,8 @@ void flag_obstacle(const gladys::gdal::raster& dsm, gladys::gdal::rasters& regio
     }
 }
 
-gladys::gdal dsm_to_region(const gladys::gdal& dsm) {
-    gladys::gdal region;
+gdalwrap::gdal dsm_to_region(const gdalwrap::gdal& dsm) {
+    gdalwrap::gdal region;
     region.copy_meta(dsm, clara::region::N_RASTER);
 
     const auto& dsm_band = dsm.bands[0];
@@ -58,9 +58,9 @@ int main(int argc, char * argv[])
         return EXIT_FAILURE;
     }
 
-    gladys::gdal dsm(argv[1]);
+    gdalwrap::gdal dsm(argv[1]);
 
-    const gladys::gdal& region = dsm_to_region( dsm );
+    const gdalwrap::gdal& region = dsm_to_region( dsm );
     region.save(argv[2]);
 
     return EXIT_SUCCESS;

@@ -14,9 +14,9 @@
 
 #include "clara/dtm.hpp"
 #include "clara/region.hpp"
-#include "gladys/gdal.hpp"
+#include "gdalwrap/gdal.hpp"
 
-void flag_obstacle(const gladys::gdal::rasters& dtm, gladys::gdal::rasters& region, size_t p1, size_t p2) {
+void flag_obstacle(const gdalwrap::rasters& dtm, gdalwrap::rasters& region, size_t p1, size_t p2) {
     if (dtm[clara::dtm::N_POINTS][p2] <= 0) {
         // unknown pixel
         region[clara::region::NO_3D_CLASS][p2] = 1;
@@ -36,8 +36,8 @@ void flag_obstacle(const gladys::gdal::rasters& dtm, gladys::gdal::rasters& regi
     }
 }
 
-gladys::gdal dtm_to_region(const gladys::gdal& dtm) {
-    gladys::gdal region;
+gdalwrap::gdal dtm_to_region(const gdalwrap::gdal& dtm) {
+    gdalwrap::gdal region;
     region.copy_meta(dtm, clara::region::N_RASTER);
 
     size_t pose, width = dtm.get_width();
@@ -63,9 +63,9 @@ int main(int argc, char * argv[])
         return EXIT_FAILURE;
     }
 
-    gladys::gdal dtm(argv[1]);
+    gdalwrap::gdal dtm(argv[1]);
 
-    const gladys::gdal& region = dtm_to_region( dtm );
+    const gdalwrap::gdal& region = dtm_to_region( dtm );
     region.save(argv[2]);
 
     return EXIT_SUCCESS;
