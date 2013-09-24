@@ -25,7 +25,7 @@ int main(int argc, char * argv[])
     gladys::gdal obstacle(argv[2]);
     gladys::gdal region;
     region.copy_meta(flat, clara::region::N_RASTER);
-    region.bands_name = {"NO_3D_CLASS", "FLAT", "OBSTACLE", "ROUGH", "SLOPE"};
+    region.names = {"NO_3D_CLASS", "FLAT", "OBSTACLE", "ROUGH", "SLOPE"};
     region.bands[clara::region::FLAT] = flat.bands[0];
     region.bands[clara::region::OBSTACLE] = obstacle.bands[0];
 

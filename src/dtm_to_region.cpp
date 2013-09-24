@@ -50,7 +50,7 @@ gladys::gdal dtm_to_region(const gladys::gdal& dtm) {
         flag_obstacle(dtm.bands, region.bands, pose, pose + width + 1);
     }
 
-    region.bands_name = {"NO_3D_CLASS", "FLAT", "OBSTACLE", "ROUGH", "SLOPE"};
+    region.names = {"NO_3D_CLASS", "FLAT", "OBSTACLE", "ROUGH", "SLOPE"};
 
     return region;
 }

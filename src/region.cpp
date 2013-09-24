@@ -66,7 +66,7 @@ int region::load(const string& filepath, uint8_t format)
 
     rMap_destroyMap(data);
 
-    io.bands_name = {"NO_3D_CLASS", "FLAT", "OBSTACLE", "ROUGH", "SLOPE"};
+    io.names = {"NO_3D_CLASS", "FLAT", "OBSTACLE", "ROUGH", "SLOPE"};
 
     return EXIT_SUCCESS;
 }

@@ -60,7 +60,7 @@ int dtm::load(const string& filepath, bool ascii)
 
     destroy_dtm(data);
 
-    io.bands_name = {"N_POINTS", "Z_MAX", "Z_MEAN", "SIGMA_Z"};
+    io.names = {"N_POINTS", "Z_MAX", "Z_MEAN", "SIGMA_Z"};
 
     return EXIT_SUCCESS;
 }
