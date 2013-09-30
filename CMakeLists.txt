@@ -114,6 +114,11 @@ target_link_libraries( clara_dsm_to_region ${LIBREGIONMAP_LIBRARIES} )
 target_link_libraries( clara_dsm_to_region ${GDALWRAP_LIBRARIES} )
 install(TARGETS clara_dsm_to_region DESTINATION bin)
 
+add_executable( clara_rgba_to_region src/rgba_to_region.cpp )
+target_link_libraries( clara_rgba_to_region ${LIBREGIONMAP_LIBRARIES} )
+target_link_libraries( clara_rgba_to_region ${GDALWRAP_LIBRARIES} )
+install(TARGETS clara_rgba_to_region DESTINATION bin)
+
 #########################################################################
 ### Uninstall ###
 #########################################################################
