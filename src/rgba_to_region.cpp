@@ -24,19 +24,18 @@ int main(int argc, char * argv[])
 {
     std::cout<<"Common LAAS Raster library"<<std::endl;
     if (argc < 3) {
-        std::cerr<<"usage: "<<argv[0]<<" meta.tif rgba.tif region.tif"<<std::endl;
+        std::cerr<<"usage: "<<argv[0]<<" rgba.tif region.tif"<<std::endl;
         return EXIT_FAILURE;
     }
-    gdalwrap::gdal meta  (argv[1]);
-    gdalwrap::gdal rgba  (argv[2]);
+    gdalwrap::gdal rgba  (argv[1]);
     gdalwrap::gdal region;
     region.names = {"NO_3D_CLASS", "FLAT", "OBSTACLE", "ROUGH"};
-    region.copy_meta(meta, region.names.size());
+    region.copy_meta(rgba, region.names.size());
     color_to_proba(rgba.bands[0], region.get_band("OBSTACLE")); // red
     color_to_proba(rgba.bands[1], region.get_band("FLAT"));     // green
     color_to_proba(rgba.bands[2], region.get_band("ROUGH"));    // blue
 
-    region.save(argv[3]);
+    region.save(argv[2]);
 
     return EXIT_SUCCESS;
 }
