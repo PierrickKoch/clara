@@ -23,7 +23,8 @@ int main(int argc, char * argv[])
     }
 
     gdalwrap::gdal dsm(argv[1]);
-    dsm.names = {"Z_MAX"};
+    dsm.names = {"Z_MAX", "N_POINTS"};
+    dsm.bands.push_back(gdalwrap::raster(dsm.bands[0].size(), 1));
     dsm.save(argv[2]);
 
     return EXIT_SUCCESS;
