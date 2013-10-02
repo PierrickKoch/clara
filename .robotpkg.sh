@@ -1,6 +1,6 @@
 #!/bin/sh
 
-__NEW_VER=0.2
+__NEW_VER=0.2.1
 
 __PKGNAME=clara
 __IS_WIP_=wip/
@@ -33,8 +33,8 @@ sed -i.bak -e "s/VERSION=\([\t]*\)$__OLD_VER/VERSION=\1$__NEW_VER/" Makefile
 make distinfo
 make clean
 make deinstall
-n=`cat /proc/cpuinfo | grep "cpu cores" | uniq | awk '{print $NF}'`
-make -j$n update
+n=`awk '/cpu cores/ {print $NF; exit}' /proc/cpuinfo`
+make MAKE_JOBS=$n update
 make print-PLIST
 # update PLIST only if changes
 test `diff -u0 PLIST PLIST.guess | wc -l` -gt 5 && mv PLIST.guess PLIST
